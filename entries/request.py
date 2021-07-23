@@ -49,6 +49,8 @@ def get_single_entry(id):
         return json.dumps(entry.__dict__)
 
 def get_all_entries():
+
+
     """Joining moods with entries in SQL"""
     # Open a connection to the database, save it as conn
     with sqlite3.connect("./dailyjournal.db") as conn:
@@ -110,3 +112,16 @@ def get_all_entries():
 
             # Use `json` package to properly serialize list as JSON
         return json.dumps(entries)
+
+def delete_entry(id):
+    """deleting from SQL database"""
+    with sqlite3.connect("./dailyjournal.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute(
+            """
+        DELETE FROM journal_entries
+        WHERE id = ?
+        """,
+            (id,),
+        )

@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from entries import get_all_entries, get_single_entry
+from entries import get_all_entries, get_single_entry, delete_entry
 
 class HandleRequests(BaseHTTPRequestHandler):
     # This is a Docstring it should be at the beginning of all classes and functions
@@ -80,6 +80,21 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             return (resource, id)
 
+    def do_DELETE(self):
+        """delete item by id"""
+        # Set a 204 response code
+        self._set_headers(204)
+
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+        # Delete a single entry from the list
+        if resource == "entries":
+            delete_entry(id)
+        
+
+        # Encode the new animal and send in response
+        self.wfile.write("".encode())
     
 def main():
     """Starts the server on port 8088 using the HandleRequests class"""
