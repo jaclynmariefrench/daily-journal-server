@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from moods import delete_mood, get_all_moods, get_single_mood
 from entries import get_all_entries, get_single_entry, delete_entry
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -48,6 +49,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_entry(id)}"
                 else:
                     response = f"{get_all_entries()}"
+            elif resource == "moods":
+                if id is not None:
+                    response = f"{get_single_mood(id)}"
+                else:
+                    response = f"{get_all_moods()}"
 
         self.wfile.write(response.encode())
     
@@ -91,6 +97,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Delete a single entry from the list
         if resource == "entries":
             delete_entry(id)
+        elif resource == "moods":
+            delete_mood(id)
         
 
         # Encode the new animal and send in response
