@@ -18,8 +18,11 @@ def get_single_entry(id):
             e.time,
             e.concept,
             e.entry,
-            e.mood_id
-        FROM entry e
+            e.mood_id,
+            m.id mood_id,
+            m.label
+        FROM journal_entries e
+        JOIN moods m ON m.id = e.mood_id
         WHERE e.id = ?
         """,
             (id,),
@@ -36,6 +39,12 @@ def get_single_entry(id):
             data["entry"],
             data["mood_id"],
         )
+
+        mood = Moods(
+                data["mood_id"], data["label"],
+        )
+
+        entry.mood = mood.__dict__
 
         return json.dumps(entry.__dict__)
 
