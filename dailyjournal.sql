@@ -5,10 +5,12 @@ CREATE TABLE `journal_entries` (
     `entry` TEXT NOT NULL,
     `mood_id` INTEGER NOT NULL,
     FOREIGN KEY(`mood_id`) REFERENCES `moods`(`id`)
-) CREATE TABLE `moods` (
+); 
+
+CREATE TABLE `moods` (
     `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     `label` TEXT NOT NULL
-
+);
 INSERT INTO `journal_entries`
 VALUES (
         NULL,
@@ -16,7 +18,7 @@ VALUES (
         'Python Server',
         'I am realizing I do not know completely what I am doing with python yet',
         2
-    )
+    );
 
 INSERT INTO `journal_entries`
 VALUES (
@@ -25,7 +27,7 @@ VALUES (
         'React',
         'I have a lot of bugs to work thru with my React code.',
         3
-    )
+    );
 
 INSERT INTO `journal_entries`
 VALUES (
@@ -34,13 +36,14 @@ VALUES (
         'SQL',
         'I feel really good about creating tables in SQL.',
         1
-    )
+    );
 
 INSERT INTO `moods` 
-VALUES (NULL, 'happy')
+VALUES (NULL, 'happy');
 
 INSERT INTO `moods` 
-VALUES (NULL, 'fine')
+VALUES (NULL, 'fine');
 
 INSERT INTO `moods` 
-VALUES (NULL, 'sad')
+VALUES (NULL, 'potato');
+

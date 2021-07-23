@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from entries import get_all_entries
+from entries import get_all_entries, get_single_entry
 
 class HandleRequests(BaseHTTPRequestHandler):
     # This is a Docstring it should be at the beginning of all classes and functions
@@ -38,8 +38,16 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         response = {}
 
-        if self.path == "/entries":
-            response = f"{get_all_entries()}"
+        parsed = self.parse_url(self.path)
+
+        if len(parsed) == 2:
+            (resource, id) = parsed
+
+            if resource == "entries":
+                if id is not None: 
+                    response = f"{get_single_entry(id)}"
+                else:
+                    response = f"{get_all_entries()}"
 
         self.wfile.write(response.encode())
     

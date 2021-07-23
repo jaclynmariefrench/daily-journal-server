@@ -6,5 +6,6 @@
             "name": "dailyjournal",
             "database": "dailyjournal.db"
         }
-    ]
+    ],
+    "python.formatting.provider": "black"
 }

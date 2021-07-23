@@ -3,6 +3,42 @@ import json
 from models import Entries
 from models import Moods
 
+def get_single_entry(id):
+    """Getting single entry from SQL by entry id"""
+    with sqlite3.connect("./dailyjournal.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        # Use a ? parameter to inject a variable's value
+        # into the SQL statement.
+        db_cursor.execute(
+            """
+        SELECT
+            e.id,
+            e.time,
+            e.concept,
+            e.entry,
+            e.mood_id
+        FROM entry e
+        WHERE e.id = ?
+        """,
+            (id,),
+        )
+
+        # Load the single result into memory
+        data = db_cursor.fetchone()
+
+        # Create an animal instance from the current row
+        entry = Entries(
+            data["id"],
+            data["time"],
+            data["concept"],
+            data["entry"],
+            data["mood_id"],
+        )
+
+        return json.dumps(entry.__dict__)
+
 def get_all_entries():
     """Joining moods with entries in SQL"""
     # Open a connection to the database, save it as conn
@@ -22,7 +58,8 @@ def get_all_entries():
             e.concept,
             e.entry,
             e.mood_id,
-            m.id mood_id
+            m.id mood_id,
+            m.label
         FROM journal_entries e
         JOIN moods m ON m.id = e.mood_id
         """
@@ -51,7 +88,7 @@ def get_all_entries():
 
             # Create a Location instance from the current row
             mood = Moods(
-                row["mood_id"], row["mood_label"]
+                row["mood_id"], row["label"],
             )
 
             # Add the dictionary representation of the location to the entrie
